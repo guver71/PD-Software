@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package pe.edu.upeu.asistencia.services;
 
 import java.util.HashMap;
@@ -12,19 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import pe.edu.upeu.asistencia.dtos.MaterialesxDto;
 import pe.edu.upeu.asistencia.exceptions.AppException;
-
 import pe.edu.upeu.asistencia.exceptions.ResourceNotFoundException;
 import pe.edu.upeu.asistencia.mappers.MaterialesxMapper;
 import pe.edu.upeu.asistencia.models.Materialesx;
 import pe.edu.upeu.asistencia.repositories.MaterialesxRepository;
-
-/**
- *
- * @author DELL
- */
 
 @RequiredArgsConstructor
 @Service
@@ -39,13 +31,16 @@ public class MaterialesxServiceImp implements MaterialesxService {
 
     private final MaterialesxMapper materialesxMapper;
 
+    private static final Logger logger = LoggerFactory.getLogger(MaterialesxServiceImp.class);
+
     @Override
     public Materialesx save(MaterialesxDto.MaterialesxCrearDto materialesx) {
-
-        Materialesx matEnt=materialesxMapper.materialesxCrearDtoToMaterialesx(materialesx);
+        Materialesx matEnt = materialesxMapper.materialesxCrearDtoToMaterialesx(materialesx);
         matEnt.setActividadId(actividadService.getActividadById(materialesx.actividadId()));
-        System.out.println(materialesx.fecha());
-        System.out.println(materialesx.horaReg());
+
+        logger.info("Fecha: {}", materialesx.fecha());  // Reemplazo de System.out
+        logger.info("Hora de registro: {}", materialesx.horaReg());  // Reemplazo de System.out
+
         try {
             return materialesxRepo.save(matEnt);
         } catch (Exception e) {
@@ -76,20 +71,21 @@ public class MaterialesxServiceImp implements MaterialesxService {
 
     @Override
     public Materialesx getMaterialesxById(Long id) {
-        Materialesx findMaterialesx = materialesxRepo.findById(id)
+        return materialesxRepo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Materialesx not exist with id :" + id));
-        return findMaterialesx;
     }
 
     @Override
     public Materialesx update(MaterialesxDto.MaterialesxCrearDto materialesx, Long id) {
         Materialesx materialesxx = materialesxRepo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Periodo not exist with id :" + id));
-            System.out.println("IMPRIME:"+materialesx.modFh());
+
+        logger.info("Modificación fecha/hora: {}", materialesx.modFh());  // Reemplazo de System.out
+
         materialesxx.setFecha(materialesx.fecha());
         materialesxx.setHoraReg(materialesx.horaReg());
         materialesxx.setOfflinex(materialesx.offlinex());
+
         return materialesxRepo.save(materialesxx);
     }
-
 }

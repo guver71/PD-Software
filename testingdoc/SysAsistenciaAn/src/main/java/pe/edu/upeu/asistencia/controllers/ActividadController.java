@@ -23,10 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 import pe.edu.upeu.asistencia.models.Actividad;
 import pe.edu.upeu.asistencia.services.ActividadService;
 
-/**
- *
- * @author DELL
- */
+
 @RestController
 @RequestMapping("/asis/actividad")
 public class ActividadController {
@@ -38,11 +35,8 @@ public class ActividadController {
     public ResponseEntity<List<Actividad>> listActividad() {
         List<Actividad> actDto = actividadService.findAll();
         
-        //Gson gson = new Gson();
-        //String jsonCartList = gson.toJson(actDto);
-        //System.out.println("Ver Aqui: "+jsonCartList);
+
         return ResponseEntity.ok(actDto);
-        //return new ResponseEntity<>(actDto, HttpStatus.OK);
     }
     
     @PostMapping("/crear")

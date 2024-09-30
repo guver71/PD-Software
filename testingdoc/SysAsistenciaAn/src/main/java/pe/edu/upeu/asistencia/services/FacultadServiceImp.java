@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package pe.edu.upeu.asistencia.services;
 
 import java.util.HashMap;
@@ -15,10 +11,6 @@ import pe.edu.upeu.asistencia.exceptions.ResourceNotFoundException;
 import pe.edu.upeu.asistencia.models.Facultad;
 import pe.edu.upeu.asistencia.repositories.FacultadRepository;
 
-/**
- *
- * @author DELL
- */
 @RequiredArgsConstructor
 @Service
 @Transactional
@@ -44,14 +36,13 @@ public class FacultadServiceImp implements FacultadService {
         entidadRepo.delete(entidadx);
         Map<String, Boolean> response = new HashMap<>();
         response.put("deleted", true);
-
         return response;
     }
 
     @Override
     public Facultad geEntidadById(Long id) {
-        Facultad findEntidad = entidadRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Facultad not exist with id :" + id));
-        return findEntidad;
+        return entidadRepo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Facultad not exist with id :" + id));
     }
 
     @Override
@@ -63,5 +54,4 @@ public class FacultadServiceImp implements FacultadService {
         entidadx.setIniciales(entidad.getIniciales());
         return entidadRepo.save(entidadx);
     }
-
 }

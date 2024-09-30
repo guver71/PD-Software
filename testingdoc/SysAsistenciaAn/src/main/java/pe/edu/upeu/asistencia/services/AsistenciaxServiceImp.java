@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package pe.edu.upeu.asistencia.services;
 
 import java.util.HashMap;
@@ -19,26 +15,22 @@ import pe.edu.upeu.asistencia.mappers.AsistenciaxMapper;
 import pe.edu.upeu.asistencia.models.Asistenciax;
 import pe.edu.upeu.asistencia.repositories.AsistenciaxRepository;
 
-/**
- *
- * @author DELL
- */
 @RequiredArgsConstructor
 @Service
 @Transactional
-public class AsistenciaxServiceImp implements AsistenciaxService{
+public class AsistenciaxServiceImp implements AsistenciaxService {
 
     @Autowired
     private AsistenciaxRepository asisRepository;
-    
+
     @Autowired
     private ActividadService actividadService;
-    
+
     private final AsistenciaxMapper asistenciaxMapper;
-    
+
     @Override
     public Asistenciax save(AsistenciaxDto.AsistenciaxCrearDto entidad) {
-               Asistenciax varEnt=asistenciaxMapper.asistenciaxCrearDtoToAsistenciax(entidad);
+        Asistenciax varEnt = asistenciaxMapper.asistenciaxCrearDtoToAsistenciax(entidad);
         varEnt.setActividadId(actividadService.getActividadById(entidad.actividadId()));
 
         try {
@@ -50,7 +42,7 @@ public class AsistenciaxServiceImp implements AsistenciaxService{
 
     @Override
     public List<Asistenciax> findAll() {
-            try {
+        try {
             return asisRepository.findAll();
         } catch (Exception e) {
             throw new AppException("Error-" + e.getMessage(), HttpStatus.BAD_REQUEST);
@@ -60,20 +52,19 @@ public class AsistenciaxServiceImp implements AsistenciaxService{
     @Override
     public Map<String, Boolean> delete(Long id) {
         Asistenciax entidadx = asisRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Materialesx not exist with id :" + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Asistenciax not exist with id :" + id));
 
         asisRepository.delete(entidadx);
         Map<String, Boolean> response = new HashMap<>();
         response.put("deleted", true);
 
-        return response;       
+        return response;
     }
 
     @Override
     public Asistenciax getEntidadById(Long id) {
-        Asistenciax findEntidad = asisRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Materialesx not exist with id :" + id));
-        return findEntidad;        
+        return asisRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Asistenciax not exist with id :" + id));
     }
 
     @Override
@@ -83,7 +74,6 @@ public class AsistenciaxServiceImp implements AsistenciaxService{
         entidadx.setFecha(entidad.fecha());
         entidadx.setHoraReg(entidad.horaReg());
         entidadx.setOfflinex(entidad.offlinex());
-        return asisRepository.save(entidadx);        
+        return asisRepository.save(entidadx);
     }
-    
 }

@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package pe.edu.upeu.asistencia.services;
 
 import java.util.HashMap;
@@ -15,10 +11,6 @@ import pe.edu.upeu.asistencia.exceptions.ResourceNotFoundException;
 import pe.edu.upeu.asistencia.models.Inscrito;
 import pe.edu.upeu.asistencia.repositories.InscritoRepository;
 
-/**
- *
- * @author DELL
- */
 @RequiredArgsConstructor
 @Service
 @Transactional
@@ -50,8 +42,8 @@ public class InscritoServiceImp implements InscritoService {
 
     @Override
     public Inscrito getEntidadById(Long id) {
-        Inscrito findInscrito = inscritoRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Activiad not exist with id :" + id));
-        return findInscrito;
+        return inscritoRepo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Activiad not exist with id :" + id));
     }
 
     @Override
@@ -59,9 +51,9 @@ public class InscritoServiceImp implements InscritoService {
         Inscrito inscritox = inscritoRepo.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Periodo not exist with id :" + id));
         inscritox.setCui(activiad.getCui());
-        inscritox.setTipoCui(activiad.getTipoCui());        
+        inscritox.setTipoCui(activiad.getTipoCui());
         inscritox.setOfflinex(activiad.getOfflinex());
-        return inscritoRepo.save(inscritox);         
+        return inscritoRepo.save(inscritox);
     }
 
 }

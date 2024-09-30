@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package pe.edu.upeu.asistencia.services;
 
 import java.util.HashMap;
@@ -15,18 +11,16 @@ import pe.edu.upeu.asistencia.exceptions.ResourceNotFoundException;
 import pe.edu.upeu.asistencia.models.Persona;
 import pe.edu.upeu.asistencia.repositories.PersonaRepository;
 
-/**
- *
- * @author DELL
- */
 @RequiredArgsConstructor
 @Service
 @Transactional
-public class PersonaServiceImp implements PersonaService{
-    
+public class PersonaServiceImp implements PersonaService {
+
     @Autowired
     private PersonaRepository entidadRepo;
-    
+
+    private static final String PERSON_NOT_FOUND = "Persona not exist with id :";
+
     @Override
     public Persona save(Persona entidad) {
         return entidadRepo.save(entidad);
@@ -40,28 +34,28 @@ public class PersonaServiceImp implements PersonaService{
     @Override
     public Map<String, Boolean> delete(Long id) {
         Persona entidadx = entidadRepo.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Persona not exist with id :" + id));
+                .orElseThrow(() -> new ResourceNotFoundException(PERSON_NOT_FOUND + id));
         entidadRepo.delete(entidadx);
         Map<String, Boolean> response = new HashMap<>();
         response.put("deleted", true);
 
-        return response;        
+        return response;
     }
 
     @Override
     public Persona geEntidadById(Long id) {
-        Persona findEntidad = entidadRepo.findById(id).orElseThrow(() -> new ResourceNotFoundException("Persona not exist with id :" + id));
-        return findEntidad;        
+        return entidadRepo.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(PERSON_NOT_FOUND + id));
     }
 
     @Override
     public Persona update(Persona entidad, Long id) {
         Persona entidadx = entidadRepo.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Persona not exist with id :" + id));
+                .orElseThrow(() -> new ResourceNotFoundException(PERSON_NOT_FOUND + id));
         entidadx.setCelular(entidad.getCelular());
         entidadx.setTipo(entidad.getTipo());
         entidadx.setEstado(entidad.getEstado());
-        return entidadRepo.save(entidadx);        
+        return entidadRepo.save(entidadx);
     }
-    
+
 }

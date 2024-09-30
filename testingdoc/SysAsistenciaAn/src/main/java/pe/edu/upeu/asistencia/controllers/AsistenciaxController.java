@@ -20,10 +20,7 @@ import pe.edu.upeu.asistencia.dtos.AsistenciaxDto;
 import pe.edu.upeu.asistencia.models.Asistenciax;
 import pe.edu.upeu.asistencia.services.AsistenciaxService;
 
-/**
- *
- * @author DELL
- */
+
 @RestController
 @RequestMapping("/asis/asistenciax")
 public class AsistenciaxController {
@@ -34,8 +31,7 @@ public class AsistenciaxController {
     public ResponseEntity<List<Asistenciax>> listMaterialesx() {
         List<Asistenciax> actDto = asistenciaxService.findAll();
         return ResponseEntity.ok(actDto);
-        // return new ResponseEntity<>(actDto, HttpStatus.OK);
-    }  
+    }
     
     @PostMapping("/crear")
     public ResponseEntity<Asistenciax> createMaterialesx(@RequestBody AsistenciaxDto.AsistenciaxCrearDto entidadx) {        
